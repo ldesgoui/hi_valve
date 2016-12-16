@@ -26,6 +26,8 @@ def index():
         webhook = request.form["webhook"]
         failed = True
         try:
+            if not webhook.startswith("https://discordapp.com/api/webhooks/"):
+                raise Exception
             rss = feedparser.parse(TF2_RSS)
             response = requests.post(webhook, params={'wait': True},
                     json={"content": "Webhook successfully registered! Here's an example",
