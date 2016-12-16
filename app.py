@@ -6,6 +6,7 @@ import bs4
 import feedparser
 from flask import Flask, request, render_template
 import os
+import random
 import requests
 import time
 
@@ -31,7 +32,7 @@ def index():
             rss = feedparser.parse(TF2_RSS)
             response = requests.post(webhook, params={'wait': True},
                     json={"content": "Webhook successfully registered! Here's an example",
-                          "embeds": [format_embed(rss['entries'][0])]})
+                          "embeds": [format_embed(random.choice(rss['entries']))]})
             if response.status_code != 200:
                 raise Exception
             with open("webhooks", "r") as f:
