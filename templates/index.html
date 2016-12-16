@@ -35,6 +35,7 @@
         <p>Posts a message in your very own Discord server when TF2.com releases a new entry on their RSS feed (could be Blog, News or Updates).</p>
         <p>To find your webhook URL, go on Discord, Server Settings, Webhooks, Create one and paste the URL below.</p>
         <p>If you don't want to use it anymore, just delete the webhook from your server.</p>
+        <p>If you're worried about privacy, know that webhooks don't let you read messages inside of a server (but don't trust me on this, go actually verify this fact).</p>
         {% if failed %}
             <p>Invalid webhook URL</p>
         {% endif %}
@@ -42,7 +43,7 @@
             <input type="text" name="webhook" placeholder="Webhook URL">
             <input type="submit">
         </form>
-        <p><a href="https://github.com/ldesgoui/tf2blog_discord_webhook">Here's how I made this, and how to contact me.</a></p>
+        <p>Here's <a href="https://github.com/ldesgoui/tf2blog_discord_webhook">how I made this</a> and <a href="https://discord.gg/GZ7yhnT">how to contact me</a>.</p>
 	<img src="http://i.imgur.com/omEJwZ2.png"></img>
     </body>
 </html>
