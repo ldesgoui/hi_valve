@@ -14,3 +14,5 @@ Set a crontab to execute the script every so often
 ## TODO
 
 - Check if webhook is dead every so often
+- Customize message (and more?)
+- Generic to any RSS (erlang rewrite?)
