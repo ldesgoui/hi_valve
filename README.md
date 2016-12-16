@@ -2,6 +2,7 @@
 
 Posts a message when TF2.com releases a new entry on their RSS feed (could be Blog, News or Updates)
 
+![Example](http://i.imgur.com/omEJwZ2.png)
 
 Depends on nix or python with feedparser, requests and beautifulsoup4 installed (change the shebangs)
 
