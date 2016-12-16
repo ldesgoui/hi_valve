@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TF2 Blog Webhook Thing</title>
+        <style>
+            /* http://jgthms.com/web-design-in-4-minutes */
+            /* im a real web dev now                     */
+
+            body {
+                max-width: 30em;
+                margin: 0 auto;
+                font-family: "Helvetica", "Arial", sans-serif;
+                line-height: 1.5;
+                padding: 4em 1em;
+                color: #555;
+            }
+
+            h1 {
+                margin-top: 1em;
+                padding-top: 1em;
+                color: #333;
+            }
+
+            a { color: #b35215; }
+
+            input[type="text"] { width: 400px; }
+
+            input[type="submit"] { width: 70px; }
+        </style>
+    </head>
+    <body>
+        <h1>TF2 Blog Discord Webhook</h1>
+        <p>Posts a message in your very own Discord server when TF2.com releases a new entry on their RSS feed (could be Blog, News or Updates).</p>
+        <p>To find your webhook URL, go on Discord, Server Settings, Webhooks, Create one and paste the URL below.</p>
+        <p>If you don't want to use it anymore, just delete the webhook from your server.</p>
+        {% if failed %}
+            <p>Invalid webhook URL</p>
+        {% endif %}
+        <form method="POST">
+            <input type="text" name="webhook" placeholder="Webhook URL">
+            <input type="submit">
+        </form>
+        <p><a href="https://github.com/ldesgoui/tf2blog_discord_webhook">Here's how I made this, and how to contact me.</a></p>
+    </body>
+</html>
