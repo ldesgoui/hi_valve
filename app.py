@@ -11,7 +11,7 @@ import requests
 import time
 
 
-CONTENT = "@everyone New TF2 Blog Post"
+CONTENT = "New TF2 Blog Post"
 TF2_RSS = "http://www.teamfortress.com/rss.xml"
 COLOR = 11751957
 
@@ -83,6 +83,11 @@ def rss_check():
                 if time.mktime(entry["published_parsed"]) > last_update
             ]
         }
+
+    latest_update = time.mktime(rss["updated_parsed"])
+
+    with open("last_update", "w") as last_update:
+        last_update.write(str(latest_update))
 
     with open("webhooks") as webhooks:
         for webhook in webhooks:
