@@ -8,8 +8,8 @@ Posts a message when TF2.com releases a new entry on their RSS feed (could be Bl
 
 Depends on nix or python with feedparser, requests and beautifulsoup4 installed (change the shebangs)
 
-To register a webhook, go to Server Settings -> Webhooks -> CReate and paste the URL given into `./webhooks` (one link per line)
-Set a crontab to execute the script every so often
+To register a webhook, go to Server Settings -> Webhooks -> Create and paste the URL given into `./webhooks` (one link per line)  
+Set a crontab to POST /webhooks/check every so often.
 
 ## TODO
 
