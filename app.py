@@ -69,9 +69,11 @@ def format_embed(entry):
     except TypeError:
         image = None
 
+    desc = soup.get_text()
+
     return {
         "title": entry["title"],
-        "description": soup.get_text()[:2000],
+        "description": desc if len(desc) < 2000 else desc[:1990] + '…',
         "url": entry["id"],
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S", entry["published_parsed"]),
         "color": COLOR,
@@ -114,9 +116,8 @@ def check():
                 continue
 
             response = requests.post(BASE + webhook[:-1], json=payload)
-            if response.status_code >= 300:
+            if response.status_code != 201:
                 out.append("POST({r.status_code}: {r.reason}) {r.text} {r.url}".format(r=response))
-                continue
 
             valid_webhooks.add(webhook)
 
