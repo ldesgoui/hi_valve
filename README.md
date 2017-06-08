@@ -16,4 +16,6 @@ If you want to host your own version of this software, you'll need:
 - postgresql (with libxml)
 - postgrest
 - UNIX shell
+- python3
+- jq
 - cron
