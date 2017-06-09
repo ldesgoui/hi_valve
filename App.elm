@@ -66,9 +66,9 @@ init =
 update action model =
     case action of
         Input input ->
-            if String.startsWith "https://discordapp.com/api/webhooks/" input then
+            if String.startsWith "https://discordapp.com/api/webhooks/" (String.trim input) then
                 { model | webhook = Err "Loading" }
-                    ! [ Http.get input decodeWebhook
+                    ! [ Http.get (String.trim input) decodeWebhook
                             |> Http.send Receive
                       ]
             else
