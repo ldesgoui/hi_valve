@@ -296,6 +296,7 @@ info =
     , "How do I use it?" => "In the Server Settings, you will find a Webhook tab where you can create a Webhook, simply paste the URL given to you after creation and tweak the sliders to your heart's desire."
     , "How do I unsubscribe?" => "You can either delete the Webhook from your Discord server, or re-use it with all values set to 0 if you want to keep it."
     , "Why can't I get only CS:GO patchnotes?" => "Sadly, Valve is not consistent on their title scheme, making it impossible to detect when a post is either a simple blogpost or a changelog."
+    , "How fast will I get the notification?" => "At most, it will take 2 minutes after the update is published on the website (a little more after 1000 subscribers due to Discord rate limits)."
     , "Can you do this for my game?" => "Sure, it will depend on the time I can allow and if it isn't a pain to fetch the update informations."
     , "Can you hack my server from this?" => "All I can read from these are the identifiers of your server and channel, those cannot be used unless authenticated and invited to the server."
     ]
