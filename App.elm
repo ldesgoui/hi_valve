@@ -74,7 +74,7 @@ update action model =
             { model | webhook = Ok webhook } ! []
 
         Receive _ ->
-            { model | webhook = Err "Failed to load webhook information" } ! []
+            { model | webhook = Err "Invalid URL (or Discord is unreachable)" } ! []
 
         Subscribe TF2 n ->
             { model | tf2 = n }
@@ -95,7 +95,7 @@ update action model =
             { model | webhook = Err "Saved" } ! []
 
         Saved False ->
-            { model | webhook = Err "Failed to save" } ! []
+            { model | webhook = Err "Server failed to save" } ! []
 
 
 load url =
