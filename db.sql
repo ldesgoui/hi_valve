@@ -119,17 +119,6 @@ END;
 $$ language plpgsql;
 
 
-create or replace function internal.free(text)
-returns boolean as $$
-    DELETE FROM
-        internal.subscriber
-    WHERE
-        webhook = $1
-    RETURNING
-        True;
-$$ language sql;
-
-
 -- USER INPUT
 
 create or replace function subscription(webhook text)
@@ -163,6 +152,8 @@ $$ language sql security definer;
 drop role postgrest;
 create role postgrest;
 grant select on table post to postgrest;
+grant execute on function subscribe(text, integer, integer, integer) to postgrest;
+grant execute on function subscription(text) to postgrest;
 
 
 commit;
