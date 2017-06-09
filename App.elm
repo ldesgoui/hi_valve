@@ -42,6 +42,7 @@ type Action
     | Subscribe Channel Int
     | Send
     | Saved Bool
+    | NoOp
 
 
 main =
@@ -66,7 +67,10 @@ update action model =
     case action of
         Input input ->
             if String.startsWith "https://discordapp.com/api/webhooks/" input then
-                { model | webhook = Err "Loading" } ! [ load input ]
+                { model | webhook = Err "Loading" }
+                    ! [ Http.get input decodeWebhook
+                            |> Http.send Receive
+                      ]
             else
                 { model | webhook = Err "Invalid URL" } ! []
 
@@ -92,16 +96,18 @@ update action model =
             model ! [ save model ]
 
         Saved True ->
-            { model | webhook = Err "Saved" } ! []
+            { model | webhook = Err "Saved" }
+                ! [ if model.tf2 + model.csgo + model.dota2 > 0 then
+                        sendPreview model
+                    else
+                        Cmd.none
+                  ]
 
         Saved False ->
             { model | webhook = Err "Server failed to save" } ! []
 
-
-load url =
-    Http.get url decodeWebhook
-        |> Http.toTask
-        |> Task.attempt Receive
+        NoOp ->
+            model ! []
 
 
 decodeWebhook =
@@ -110,6 +116,78 @@ decodeWebhook =
         (JD.field "token" JD.string)
         (JD.field "name" <| JD.maybe JD.string)
         (JD.field "avatar" <| JD.maybe JD.string)
+
+
+sendPreview model =
+    let
+        tf2Message =
+            case model.tf2 of
+                1 ->
+                    "massive TF2 updates"
+
+                2 ->
+                    "any TF2 update"
+
+                3 ->
+                    "any TF2 blogpost"
+
+                _ ->
+                    "nothing TF2"
+
+        csgoMessage =
+            case model.csgo of
+                1 ->
+                    "massive CS:GO updates"
+
+                2 ->
+                    "any CS:GO blogpost"
+
+                _ ->
+                    "nothing CS:GO"
+
+        dota2Message =
+            case model.dota2 of
+                1 ->
+                    "massive DotA2 updates"
+
+                2 ->
+                    "any DotA2 update"
+
+                3 ->
+                    "any DotA2 blogpost"
+
+                _ ->
+                    "nothing DotA2"
+    in
+        case model.webhook of
+            Ok { id, token } ->
+                Http.post ("https://discordapp.com/api/webhooks/" ++ id ++ "/" ++ token)
+                    (Http.jsonBody
+                        (JE.object
+                            [ "content" => JE.string ("Hey, you've properly installed 'hi valve' with the following settings: " ++ tf2Message ++ ", " ++ csgoMessage ++ ", " ++ dota2Message ++ ". If you don't know what this is about, click the link below!")
+                            , "embeds"
+                                => JE.list
+                                    [ JE.object
+                                        [ "title" => JE.string "This is an example title!"
+                                        , "description" => JE.string loremIpsum
+                                        , "url" => JE.string "https://ldesgoui.xyz/hi_valve"
+                                        , "timestamp" => JE.string "1970-01-01 00:01"
+                                        , "image" => JE.object [ "url" => JE.string "http://www.valvesoftware.com/images/company/valve_logo.png" ]
+                                        ]
+                                    ]
+                            ]
+                        )
+                    )
+                    (JD.succeed ())
+                    |> Http.send (always NoOp)
+
+            Err _ ->
+                Cmd.none
+
+
+loremIpsum =
+    """Lorem ipsum dolor sit amet, consectetur adipiscing elit. In molestie at velit eget feugiat. Cras tortor lacus, laoreet in cursus in, rhoncus dictum justo. In vel placerat leo. In hac habitasse platea dictumst. Nullam in arcu et ante ornare aliquet. Donec pharetra est tellus, sed cursus purus pootis in. Sed ullamcorper tristique mi, non consectetur nisi faucibus eu. Pellentesque non est tempus libero molestie blandit ac finibus ligula. Donec convallis ante non lorem molestie, vulputate mollis neque scelerisque. Phasellus vestibulum metus faucibus ligula rhoncus tempus. Etiam laoreet, nisi eu malesuada molestie, ex lorem vestibulum nunc, vel lacinia arcu leo sed ex. Phasellus dictum mattis libero, quis laoreet dui feugiat sit amet. Proin vel magna placerat, consectetur tortor et, imperdiet metus.
+"""
 
 
 save model =
@@ -129,8 +207,7 @@ save model =
                     )
                 )
                 (JD.succeed ())
-                |> Http.toTask
-                |> Task.attempt (Saved << isOk)
+                |> Http.send (Saved << isOk)
 
 
 (=>) =
