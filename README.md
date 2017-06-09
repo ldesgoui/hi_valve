@@ -19,3 +19,6 @@ If you want to host your own version of this software, you'll need:
 - python3
 - jq
 - cron
+
+Copyright (c) 2017 ldesgoui
+read file 'LICENSE' for details

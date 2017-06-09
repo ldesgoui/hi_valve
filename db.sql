@@ -1,3 +1,5 @@
+-- Copyright (c) 2017 ldesgoui
+-- read file 'LICENSE' for details
 begin;
 
 -- PUBLIC

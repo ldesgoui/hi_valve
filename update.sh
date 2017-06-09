@@ -1,5 +1,7 @@
 #!/bin/sh
-# req: psql, jq, python3, jq
+# Copyright (c) 2017 ldesgoui
+# read file 'LICENSE' for details
+# required: psql, jq, python3, grep, curl, sed, head, cut
 
 export firstArg="$1"
 export sent=0
