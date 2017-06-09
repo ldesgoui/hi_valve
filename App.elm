@@ -1,6 +1,8 @@
 {- Copyright (c) 2017 ldesgoui
--- read file 'LICENSE' for details
+   -- read file 'LICENSE' for details
 -}
+
+
 module App exposing (..)
 
 import Json.Encode as JE
@@ -31,13 +33,13 @@ type alias Webhook =
 type Channel
     = TF2
     | CSGO
-    | DOTA2
+    | DotA2
 
 
 type Action
     = Input String
     | Receive (Result Http.Error Webhook)
-    | Subscribe Channel (Result String Int)
+    | Subscribe Channel Int
     | Send
     | Saved Bool
 
@@ -74,20 +76,17 @@ update action model =
         Receive _ ->
             { model | webhook = Err "Failed to load webhook information" } ! []
 
-        Subscribe TF2 (Ok n) ->
+        Subscribe TF2 n ->
             { model | tf2 = n }
                 ! []
 
-        Subscribe CSGO (Ok n) ->
+        Subscribe CSGO n ->
             { model | csgo = n }
                 ! []
 
-        Subscribe DOTA2 (Ok n) ->
+        Subscribe DotA2 n ->
             { model | dota2 = n }
                 ! []
-
-        Subscribe _ _ ->
-            model ! []
 
         Send ->
             model ! [ save model ]
@@ -158,22 +157,21 @@ css =
         text-align: center;
     }
 
+    .label {
+        margin: 8px 32px;
+    }
+    label {
+        margin: auto 16px;
+    }
+
     hr {
         width: 42%
     }
 
-    input, button {
+    input:not([type]), button {
         width: 100%;
         box-sizing: border-box;
         margin: 4px auto;
-    }
-
-    span {
-        margin-bottom: 16px;
-    }
-
-    input[type="range"] {
-        width: 42%;
     }
 
     a {
@@ -221,16 +219,16 @@ view model =
         dota2Message =
             case model.dota2 of
                 0 ->
-                    "You will receive no DOTA2-related notifications"
+                    "You will receive no DotA2-related notifications"
 
                 1 ->
-                    "You will receive DOTA2 notifications about massive updates"
+                    "You will receive DotA2 notifications about massive updates"
 
                 2 ->
-                    "You will receive DOTA2 notifications about any update"
+                    "You will receive DotA2 notifications about any update"
 
                 _ ->
-                    "You will receive all DOTA2 notifications published"
+                    "You will receive all DotA2 notifications published"
 
         subMessage w =
             case w.name of
@@ -240,50 +238,57 @@ view model =
                 Nothing ->
                     "Subscribe using webhooks"
     in
-        main_ []
-            [ node "style" [] [ text css ]
-            , h1 [] [ text "hi valve" ]
-            , input [ placeholder "https://discordapp.com/api/webhook/...", onInput Input ] []
-            , button
-                [ if isOk model.webhook then
-                    onClick Send
-                  else
-                    disabled True
-                ]
-                [ text <| fromResult identity subMessage model.webhook ]
-            , input
-                [ type_ "range"
-                , attribute "min" "0"
-                , attribute "max" "3"
-                , value <| toString model.tf2
-                , onInput (Subscribe TF2 << String.toInt)
-                ]
-                []
-            , span [] [ text tf2Message ]
-            , input
-                [ type_ "range"
-                , attribute "min" "0"
-                , attribute "max" "2"
-                , value <| toString model.csgo
-                , onInput (Subscribe CSGO << String.toInt)
-                ]
-                []
-            , span [] [ text csgoMessage ]
-            , input
-                [ type_ "range"
-                , attribute "min" "0"
-                , attribute "max" "3"
-                , value <| toString model.dota2
-                , onInput (Subscribe DOTA2 << String.toInt)
-                ]
-                []
-            , span [] [ text dota2Message ]
-            , hr [] []
-            , div [] (List.concatMap (\( q, a ) -> [ blockquote [] [ text q ], p [] [ text a ] ]) info)
-            , a [ href "https://github.com/ldesgoui/hi_valve" ] [ text "Source code of the app" ]
-            , a [ href "https://discordapp.com/invite/GZ7yhnT" ] [ text "My Discord server" ]
-            , img [ src "https://p.ldesgoui.xyz/1497003672.png" ] []
+        [ node "style" [] [ text css ]
+        , h1 [] [ text "hi valve" ]
+        , input [ placeholder "https://discordapp.com/api/webhook/...", onInput Input ] []
+        , button
+            [ if isOk model.webhook then
+                onClick Send
+              else
+                disabled True
             ]
+            [ text <| fromResult identity subMessage model.webhook ]
+        , span [] [ text "Your Discord server will receive:" ]
+        ]
+            ++ (List.map
+                    (\( g, v, f, t ) ->
+                        [ input
+                            [ type_ "radio"
+                            , name <| toString g
+                            , onCheck (always <| Subscribe g v)
+                            , id (toString g ++ toString v)
+                            , checked (f model == v)
+                            ]
+                            []
+                        , label [ for (toString g ++ toString v) ]
+                            [ text t ]
+                        ]
+                            |> div [ class "label" ]
+                    )
+                    options
+               )
+            ++ [ hr [] []
+               , div [] (List.concatMap (\( q, a ) -> [ blockquote [] [ text q ], p [] [ text a ] ]) info)
+               , a [ href "https://github.com/ldesgoui/hi_valve" ] [ text "Source code of the app" ]
+               , a [ href "https://discordapp.com/invite/GZ7yhnT" ] [ text "My Discord server" ]
+               , img [ src "https://p.ldesgoui.xyz/1497003672.png" ] []
+               ]
+            |> main_ []
+
+
+options =
+    [ ( TF2, 0, (.tf2), "nothing TF2-related" )
+    , ( TF2, 1, (.tf2), "massive TF2 updates" )
+    , ( TF2, 2, (.tf2), "any TF2 update" )
+    , ( TF2, 3, (.tf2), "any TF2 blogpost" )
+    , ( CSGO, 0, (.csgo), "nothing CS:GO-related" )
+    , ( CSGO, 1, (.csgo), "massive CS:GO updates" )
+    , ( CSGO, 2, (.csgo), "any CS:GO blogpost" )
+    , ( DotA2, 0, (.dota2), "nothing DotA2-related" )
+    , ( DotA2, 1, (.dota2), "massive DotA2 updates" )
+    , ( DotA2, 2, (.dota2), "any DotA2 update" )
+    , ( DotA2, 3, (.dota2), "any DotA2 blogpost" )
+    ]
 
 
 info =
