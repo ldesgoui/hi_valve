@@ -151,11 +151,10 @@ returns internal.subscriber as $$
 $$ language sql security definer;
 
 
-drop role postgrest;
-create role postgrest;
-grant select on table post to postgrest;
-grant execute on function subscribe(text, integer, integer, integer) to postgrest;
-grant execute on function subscription(text) to postgrest;
+create role hi_valve;
+grant select on table post to hi_valve;
+grant execute on function subscribe(text, integer, integer, integer) to hi_valve;
+grant execute on function subscription(text) to hi_valve;
 
 
 commit;
