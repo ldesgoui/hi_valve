@@ -1,7 +1,7 @@
 {
     "version": "1.0.0",
     "summary": "hi_valve: discord webhook utility to stay up to date with valve games",
-    "repository": "https://github.com/ldesgoui/hi_valve.git",
+    "repository": "https://github.com/ldesgoui/hi-valve.git",
     "license": "MIT",
     "source-directories": [
         "."

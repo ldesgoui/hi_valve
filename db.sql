@@ -155,6 +155,7 @@ create role hi_valve;
 grant select on table post to hi_valve;
 grant execute on function subscribe(text, integer, integer, integer) to hi_valve;
 grant execute on function subscription(text) to hi_valve;
+grant hi_valve to postgrest;
 
 
 commit;

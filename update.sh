@@ -6,7 +6,7 @@
 export firstArg="$1"
 export sent=0
 
-sql() { psql -A -P footer=off -P tuples_only=on -v "in='$(echo $@ | sed "s/'/''/g")'"; }
+sql() { psql -A -P footer=off -P tuples_only=on -v "in='$(echo $@ | sed "s/'/''/g")'" -U postgrest hi_valve; }
 
 import(){
   sql $(curl -s $1) <<< 'select internal.import_xml(:in)' \

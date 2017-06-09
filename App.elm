@@ -119,7 +119,7 @@ save model =
             Cmd.none
 
         Ok webhook ->
-            Http.post "http://ldesgoui.xyz/hi_valve/api/rpc/subscribe"
+            Http.post "https://ldesgoui.xyz/hi_valve/api/rpc/subscribe"
                 (Http.jsonBody
                     (JE.object
                         [ "webhook" => JE.string (webhook.id ++ "/" ++ webhook.token)
@@ -179,6 +179,10 @@ css =
     a {
         color: #b35215;
         margin: auto;
+    }
+
+    img {
+        max-width: 100%;
     }
     """
 
@@ -278,13 +282,14 @@ view model =
             , div [] (List.concatMap (\( q, a ) -> [ blockquote [] [ text q ], p [] [ text a ] ]) info)
             , a [ href "https://github.com/ldesgoui/hi_valve" ] [ text "Source code of the app" ]
             , a [ href "https://discordapp.com/invite/GZ7yhnT" ] [ text "My Discord server" ]
+            , img [ src "https://p.ldesgoui.xyz/1497003672.png" ] []
             ]
 
 
 info =
     [ "What does this do?" => "Valve games publish updates and other news on the games' blogs, this tools fetches them every minute and sends a Discord message to your server whenever something you've subscribed for shows up."
     , "How do I use it?" => "In the Server Settings, you will find a Webhook tab where you can create a Webhook, simply paste the URL given to you after creation and tweak the sliders to your heart's desire."
-    , "How do I unsubcribe?" => "You can either delete the Webhook from your Discord server, or re-use it with all values set to 0 if you want to keep it."
+    , "How do I unsubscribe?" => "You can either delete the Webhook from your Discord server, or re-use it with all values set to 0 if you want to keep it."
     , "Why can't I get only CS:GO patchnotes?" => "Sadly, Valve is not consistent on their title scheme, making it impossible to detect when a post is either a simple blogpost or a changelog."
     , "Can you do this for my game?" => "Sure, it will depend on the time I can allow and if it isn't a pain to fetch the update informations."
     , "Can you hack my server from this?" => "All I can read from these are the identifiers of your server and channel, those cannot be used unless authenticated and invited to the server."
