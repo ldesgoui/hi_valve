@@ -19,6 +19,7 @@ import(){
       local postContent=$(sql $postUrl <<< 'select content from post where url = :in' \
           | python3 -c 'print(__import__("html").unescape(__import__("sys").stdin.read()))' \
           | python3 -c 'print(__import__("html").unescape(__import__("sys").stdin.read()))' \
+          | sed 's|<\s*br\s*/\?>|\n|g'
           | sed 's/<[^>]*>//g'  \
           | head -c 1990 )
       local postImage=$(sql $postUrl <<< 'select content from post where url = :in' \
@@ -35,7 +36,16 @@ import(){
             --arg title "$postTitle" \
             --arg content "$postContent" \
             --argjson image "$postImage" \
-            '{content: "<\($url)> (from <https://ldegoui.xyz/hi_valve>)", embeds:[{title: $title, description: $content, url: $url, timestamp: $date, image: $image}]}' \
+            '{
+                content: "<\($url)> (from <https://ldesgoui.xyz/hi_valve>. by the way, CS:GO update only filter is now available!)", 
+                embeds: [{
+                    title: $title,
+                    description: $content,
+                    url: $url,
+                    timestamp: $date,
+                    image: $image
+                }]
+            }' \
             | curl -s -i -X POST -H "Content-Type: application/json" -d@- \
               "https://discordapp.com/api/webhooks/$webhook?wait=true" \
             | grep 'HTTP/.* 40[45]' \
