@@ -290,6 +290,9 @@ view model =
                 1 ->
                     "You will receive CS:GO notifications about massive updates"
 
+                2 ->
+                    "You will receive CS:GO notifications about any update"
+
                 _ ->
                     "You will receive all CS:GO notifications published"
 
@@ -360,7 +363,8 @@ options =
     , ( TF2, 3, (.tf2), "any TF2 blogpost" )
     , ( CSGO, 0, (.csgo), "nothing CS:GO-related" )
     , ( CSGO, 1, (.csgo), "massive CS:GO updates" )
-    , ( CSGO, 2, (.csgo), "any CS:GO blogpost" )
+    , ( CSGO, 2, (.csgo), "any CS:GO update" )
+    , ( CSGO, 3, (.csgo), "any CS:GO blogpost" )
     , ( DotA2, 0, (.dota2), "nothing DotA2-related" )
     , ( DotA2, 1, (.dota2), "massive DotA2 updates" )
     , ( DotA2, 2, (.dota2), "any DotA2 update" )
@@ -372,7 +376,7 @@ info =
     [ "What does this do?" => "Valve games publish updates and other news on the games' blogs, this tools fetches them every minute and sends a Discord message to your server whenever something you've subscribed for shows up."
     , "How do I use it?" => "In the Server Settings, you will find a Webhook tab where you can create a Webhook, simply paste the URL given to you after creation and tweak the sliders to your heart's desire."
     , "How do I unsubscribe?" => "You can either delete the Webhook from your Discord server, or re-use it with all values set to 0 if you want to keep it."
-    , "Why can't I get only CS:GO patchnotes?" => "Sadly, Valve is not consistent on their title scheme, making it impossible to detect when a post is either a simple blogpost or a changelog."
+    , "Why can't I get only CS:GO patchnotes?" => "You now can!"
     , "How fast will I get the notification?" => "At most, it will take 2 minutes after the update is published on the website (a little more after 1000 subscribers due to Discord rate limits)."
     , "Can you do this for my game?" => "Sure, it will depend on the time I can allow and if it isn't a pain to fetch the update informations."
     , "Can you hack my server from this?" => "All I can read from these are the identifiers of your server and channel, those cannot be used unless authenticated and invited to the server."
