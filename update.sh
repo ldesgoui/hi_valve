@@ -49,5 +49,6 @@ import(){
 
 import 'http://www.teamfortress.com/rss.xml'
 import 'http://blog.counter-strike.net/index.php/feed/'
+import 'http://blog.counter-strike.net/index.php/category/updates/feed/'
 import 'http://blog.dota2.com/feed/'
 

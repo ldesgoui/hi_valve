@@ -66,8 +66,10 @@ BEGIN
         return 0;
     elsif post.content ~ 'counter-strike\.net\/(?!index\.php)\w+' then
         return 1;
+    elsif post.title ilike '%release notes%' then
+        return 2;
     else
-        return 2; -- no update-only because Valve arent coherent in their titling scheme
+        return 3;
     end if;
 END
 $$ language plpgsql;
