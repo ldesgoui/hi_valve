@@ -140,6 +140,9 @@ sendPreview model =
                     "massive CS:GO updates"
 
                 2 ->
+                    "any CS:GO update"
+
+                3 ->
                     "any CS:GO blogpost"
 
                 _ ->
@@ -173,6 +176,7 @@ sendPreview model =
                                         , "url" => JE.string "https://ldesgoui.xyz/hi_valve"
                                         , "timestamp" => JE.string "1970-01-01 00:01"
                                         , "image" => JE.object [ "url" => JE.string "http://www.valvesoftware.com/images/company/valve_logo.png" ]
+                                        , "footer" => JE.string "from https://ldesgoui.xyz/hi_valve (CS:GO update only filter now available)"
                                         ]
                                     ]
                             ]

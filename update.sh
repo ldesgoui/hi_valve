@@ -37,13 +37,14 @@ import(){
             --arg content "$postContent" \
             --argjson image "$postImage" \
             '{
-                content: "<\($url)> (from <https://ldesgoui.xyz/hi_valve>. by the way, CS:GO update only filter is now available!)", 
+                content: $url,
                 embeds: [{
                     title: $title,
                     description: $content,
                     url: $url,
                     timestamp: $date,
-                    image: $image
+                    image: $image,
+                    footer: "from https://ldesgoui.xyz/hi_valve (CS:GO update only filter now available)"
                 }]
             }' \
             | curl -s -i -X POST -H "Content-Type: application/json" -d@- \
