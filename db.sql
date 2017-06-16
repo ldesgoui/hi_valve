@@ -33,7 +33,7 @@ returns setof text as $$
         (xpath('guid/text()', x))[1]::text as url,
         to_timestamp((xpath('pubDate/text()', x))[1]::text, 'Dy, DD Mon YYYY HH24:MI:SS +0000') as date,
         (xpath('title/text()', x))[1]::text as title,
-        coalesce( (xpath('content:encoded/text()', x, ARRAY[ARRAY['content', 'http://purl.org/rss/1.0/modules/content/']]))[1]::text, (xpath('description/text()', x))[1]::text ) as content
+        coalesce( (xpath('content:encoded/text()', x, ARRAY[ARRAY['content', 'http://purl.org/rss/1.0/modules/content/']]))[1]::text, (xpath('description/text()', x))[1]::text, '' ) as content
     FROM
         unnest(xpath('/rss/channel/item', xmlparse(content $1))) as x
     ON CONFLICT (url) DO NOTHING

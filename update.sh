@@ -11,15 +11,15 @@ sql() { psql -A -P footer=off -P tuples_only=on -v "in='$(echo $@ | sed "s/'/''/
 import(){
   sql $(curl -s $1) <<< 'select internal.import_xml(:in)' \
     | while read -r postUrl; do
-      [ "$firstArg" == "--init" ] && break
       [ -z "$postUrl" ] && continue
       echo "Processing: $postUrl"
+      [ "$firstArg" == "--init" ] && break
       local postDate=$(sql $postUrl <<< 'select date from post where url = :in')
       local postTitle=$(sql $postUrl <<< 'select title from post where url = :in')
       local postContent=$(sql $postUrl <<< 'select content from post where url = :in' \
           | python3 -c 'print(__import__("html").unescape(__import__("sys").stdin.read()))' \
           | python3 -c 'print(__import__("html").unescape(__import__("sys").stdin.read()))' \
-          | sed 's|<\s*br\s*/\?>|\n|g'
+          | sed 's|<\s*br\s*/\?>|\n|g' \
           | sed 's/<[^>]*>//g'  \
           | head -c 1990 )
       local postImage=$(sql $postUrl <<< 'select content from post where url = :in' \
