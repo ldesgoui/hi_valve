@@ -44,7 +44,7 @@ import(){
                     url: $url,
                     timestamp: $date,
                     image: $image,
-                    footer: "from https://ldesgoui.xyz/hi_valve (CS:GO update only filter now available)"
+                    footer: { text: "from https://ldesgoui.xyz/hi_valve (CS:GO update only filter now available)" }
                 }]
             }' \
             | curl -s -i -X POST -H "Content-Type: application/json" -d@- \
