@@ -9,6 +9,7 @@ export sent=0
 sql() { psql -A -P footer=off -P tuples_only=on -v "in='$(echo $@ | sed "s/'/''/g")'" -U postgrest hi_valve; }
 
 import(){
+  set -f
   sql $(curl -s $1) <<< 'select internal.import_xml(:in)' \
     | while read -r postUrl; do
       [ -z "$postUrl" ] && continue
@@ -44,7 +45,7 @@ import(){
                     url: $url,
                     timestamp: $date,
                     image: $image,
-                    footer: { text: "from https://ldesgoui.xyz/hi_valve (CS:GO update only filter now available)" }
+                    footer: { text: "https://ldesgoui.xyz/hi_valve" }
                 }]
             }' \
             | curl -s -i -X POST -H "Content-Type: application/json" -d@- \
