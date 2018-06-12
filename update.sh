@@ -21,7 +21,8 @@ import(){
           | python3 -c 'print(__import__("html").unescape(__import__("sys").stdin.read()))' \
           | python3 -c 'print(__import__("html").unescape(__import__("sys").stdin.read()))' \
           | sed 's|<\s*br\s*/\?>|\n|g' \
-          | sed 's/<[^>]*>//g'  \
+          | sed 's|</p\s*>|\n\n|g' \
+          | sed 's/<[^>]*>//g' \
           | head -c 1990 )
       local postImage=$(sql $postUrl <<< 'select content from post where url = :in' \
           | grep -o 'img src="[^"]*"' \
